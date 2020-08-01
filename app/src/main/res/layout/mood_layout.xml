@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/moods"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    >
+
+    <ImageView
+        android:id="@+id/mood1"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="@drawable/normal"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        />
+
+    <ImageView
+        android:id="@+id/mood2"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="@drawable/happy"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@id/mood1"
+        android:layout_toEndOf="@id/mood1"
+
+        />
+
+    <ImageView
+        android:id="@+id/mood3"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="@drawable/angry"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@id/mood2"
+        android:layout_toEndOf="@id/mood2" />
+
+    <ImageView
+        android:id="@+id/mood4"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="@drawable/sad"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@id/mood3"
+        android:layout_toEndOf="@id/mood3"
+        />
+</LinearLayout>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    >
+
+    <ImageView
+        android:id="@+id/tool1"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="@drawable/pad"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        />
+
+    <ImageView
+        android:id="@+id/tool2"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="@drawable/tampon"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@id/tool1"
+        android:layout_toEndOf="@id/tool1"
+
+        />
+
+    <ImageView
+        android:id="@+id/tool3"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="@drawable/pinty_liner"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@id/tool2"
+        android:layout_toEndOf="@id/tool2" />
+
+    <ImageView
+        android:id="@+id/tool4"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="@drawable/cup"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@id/tool3"
+        android:layout_toEndOf="@id/tool3"
+        />
+</LinearLayout>
