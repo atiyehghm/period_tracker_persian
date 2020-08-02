@@ -34,6 +34,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+<<<<<<< HEAD
     implementation 'com.github.mohamadian:PersianHorizontalExpCalendar:1.5'
+=======
+>>>>>>> ead0fb76051021cde2c8c16fcc3da56a952c416e
 
 }

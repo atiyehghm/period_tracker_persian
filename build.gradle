@@ -5,7 +5,11 @@ buildscript {
         jcenter()
     }
     dependencies {
+<<<<<<< HEAD
         classpath "com.android.tools.build:gradle:3.5.3"
+=======
+        classpath "com.android.tools.build:gradle:4.0.0"
+>>>>>>> ead0fb76051021cde2c8c16fcc3da56a952c416e
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -16,7 +20,10 @@ allprojects {
     repositories {
         google()
         jcenter()
+<<<<<<< HEAD
         maven { url 'https://jitpack.io' }
+=======
+>>>>>>> ead0fb76051021cde2c8c16fcc3da56a952c416e
     }
 }
 

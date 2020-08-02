@@ -3,7 +3,10 @@
     package="edu.sharif.periodtracker">
 
     <application
+<<<<<<< HEAD
         android:name=".MyApplication"
+=======
+>>>>>>> ead0fb76051021cde2c8c16fcc3da56a952c416e
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

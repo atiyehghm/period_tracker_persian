@@ -4,9 +4,13 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+<<<<<<< HEAD
         <compositeConfiguration>
           <compositeBuild compositeDefinitionSource="SCRIPT" />
         </compositeConfiguration>
+=======
+        <option name="testRunner" value="PLATFORM" />
+>>>>>>> ead0fb76051021cde2c8c16fcc3da56a952c416e
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleJvm" value="1.8" />
@@ -17,7 +21,10 @@
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
+<<<<<<< HEAD
         <option name="testRunner" value="PLATFORM" />
+=======
+>>>>>>> ead0fb76051021cde2c8c16fcc3da56a952c416e
       </GradleProjectSettings>
     </option>
   </component>
