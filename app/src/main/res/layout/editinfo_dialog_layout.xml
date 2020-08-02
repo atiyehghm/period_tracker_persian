@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/cycle"
+        android:hint="@string/cycleEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/period"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cycle"
+        android:layout_marginTop="25dp"
+        android:hint="@string/periodEdit" />
+
+    <EditText
+        android:id="@+id/lastDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/period"
+        android:layout_marginTop="25dp"
+        android:hint="@string/lastDateEdit"
+        android:inputType="datetime" />
+
+</RelativeLayout>
