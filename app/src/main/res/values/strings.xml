@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">periodTracker</string>
+    <string name="title_home">خانه</string>
+    <string name="title_calendar">تقویم</string>
+    <string name="title_add">افزودن</string>
+    <string name="title_report">گزارشات</string>
+    <string name="title_content">محتوا‌ها</string>
+    <string name="cycleEdit">طول دوره</string>
+    <string name="periodEdit">مدت زمان قاعدگی</string>
+    <string name="lastDateEdit">تاریخ شروع آخرین پریود</string>
+    <string name="editInfo">اصلاح اطلاعات </string>
+    <string name="cancel">انصراف</string>
+    <string name="done">تمام</string>
+</resources>
