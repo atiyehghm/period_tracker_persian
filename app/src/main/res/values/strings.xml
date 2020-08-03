@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">periodTracker</string>
+    <string name="app_name">بانوان کلندر</string>
     <string name="title_home">خانه</string>
     <string name="title_calendar">تقویم</string>
     <string name="title_add">افزودن</string>
@@ -11,4 +11,7 @@
     <string name="editInfo">اصلاح اطلاعات </string>
     <string name="cancel">انصراف</string>
     <string name="done">تمام</string>
+    <string name="choosePainPart">درد داری؟ کجا؟</string>
+    <string name="chooseMood">حالت چجوریه؟</string>
+    <string name="chooseTool">از کدوم وسیله داری استفاده می‌کنی؟</string>
 </resources>
