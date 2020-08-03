@@ -11,4 +11,6 @@
     <string name="editInfo">اصلاح اطلاعات </string>
     <string name="cancel">انصراف</string>
     <string name="done">تمام</string>
+    <string name="actualPeriod">اصلاح زمان قاعدگی</string>
+    <string name="actualPeriodTitle">اصلاح زمان قاعدگی</string>
 </resources>

@@ -1,7 +1,10 @@
 package edu.sharif.periodtracker.ui.calendar;
 
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,44 +19,96 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.mohamadian.persianhorizontalexpcalendar.PersianHorizontalExpCalendar;
 import com.mohamadian.persianhorizontalexpcalendar.enums.PersianViewPagerType;
+import com.mohamadian.persianhorizontalexpcalendar.model.CustomGradientDrawable;
 
+import org.joda.time.Chronology;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.chrono.PersianChronologyKhayyam;
 
 import edu.sharif.periodtracker.R;
 
-public class CalendarFragment extends Fragment implements EditInfoDialog.EditInfoDialogListener {
+public class CalendarFragment extends Fragment implements EditInfoDialog.EditInfoDialogListener, ActualPeriodDialog.ActualPeriodDialogListener {
     private PersianHorizontalExpCalendar persianHorizontalExpCalendar;
     private CalendarViewModel reportViewModel;
     private Button editInfo;
+    private Button actualPeriod;
     private Integer cycle, period;
+    private Chronology perChr = PersianChronologyKhayyam.getInstance(DateTimeZone.forID("Asia/Tehran"));
+    private DateTime lastPeriod;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
+        //default values
+        period = 7; cycle = 28; lastPeriod = new DateTime(1300, 1, 1, 0, 0, 0, perChr);
         reportViewModel = ViewModelProviders.of(this).get(CalendarViewModel.class);
         View root = inflater.inflate(R.layout.fragment_calendar, container, false);
         persianHorizontalExpCalendar = root.findViewById(R.id.persianCalendar);
         editInfo = root.findViewById(R.id.edit_info);
-
+        actualPeriod = root.findViewById(R.id.actualPeriod);
+        actualPeriod.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActualPeriodDialog();
+            }
+        });
         editInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDialog();
+                openEditInfoDialog();
             }
         });
         return root;
     }
 
-    private void openDialog() {
-        EditInfoDialog editInfoDialog = EditInfoDialog.getInstance(CalendarFragment.this);
+    private void openEditInfoDialog() {
+        EditInfoDialog editInfoDialog = EditInfoDialog.getInstance(CalendarFragment.this, this.cycle, this.period);
         editInfoDialog.show(getActivity().getSupportFragmentManager(), "Edit info Dialog");
     }
 
+    private void openActualPeriodDialog(){
+        ActualPeriodDialog actualPeriodDialog = ActualPeriodDialog.getInstance(CalendarFragment.this);
+        actualPeriodDialog.show(getActivity().getSupportFragmentManager(), "Actual Period Dialog");
+    }
+
     @Override
-    public void ApplyInfo(Integer cycle, Integer period) {
+    public void ApplyInfo(Integer cycle, Integer period, DateTime lastPeriod) {
         this.cycle = cycle;
         this.period = period;
+        this.lastPeriod = lastPeriod;
         Log.i("******** in fragment", "the cycle and period is:" + this.cycle.toString() + "--" + this.period.toString());
+        markPeriodDays();
+    }
+
+    public void markPeriodDays() {
+        // for this month
+        for(int i = 0; i < this.period; i++){
+            //from here you can change period highlight color
+            this.persianHorizontalExpCalendar
+                    .markDate(new DateTime(this.lastPeriod.getYear(), this.lastPeriod.getMonthOfYear(), this.lastPeriod.getDayOfMonth(), 0, 0, perChr).plusDays(i),
+                            new CustomGradientDrawable(GradientDrawable.RECTANGLE, Color.parseColor("#35a677bd"))
+                                    .setstroke(1, Color.parseColor("#a677bd")));
+        }
+        //for all the months
+        DateTime startDate = this.lastPeriod;
+        for(int i = 1; i < 12; i++){
+            startDate = new DateTime(startDate.getYear(), startDate.getMonthOfYear(), startDate.getDayOfMonth(), 0 ,0,0 , perChr).plusDays(cycle);
+            for(int j = 0; j < this.period; j++) {
+                this.persianHorizontalExpCalendar
+                        .markDate(new DateTime(startDate.getYear(), startDate.getMonthOfYear(), startDate.getDayOfMonth(), 0, 0, perChr).plusDays(j),
+                                new CustomGradientDrawable(GradientDrawable.RECTANGLE, Color.parseColor("#ff3399"))
+                                        .setViewLayoutSize(ViewGroup.LayoutParams.MATCH_PARENT, 10)
+                                        .setViewLayoutGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM)
+                                        .setcornerRadius(5)
+                                        .setTextColor(Color.parseColor("#FF66B2")));
+            }
+
+        }
+    }
+
+    @Override
+    public void ApplyDate(DateTime startDate, DateTime endDate) {
+
     }
 }
