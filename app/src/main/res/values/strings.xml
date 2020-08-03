@@ -10,5 +10,18 @@
     <string name="lastDateEdit">تاریخ شروع آخرین پریود</string>
     <string name="editInfo">اصلاح اطلاعات </string>
     <string name="cancel">انصراف</string>
+
     <string name="done">تمام</string>
+    <string name="pain1">زیر شکم</string>
+    <string name="pain2">سر</string>
+    <string name="pain3">کمر</string>
+    <string name="pain4">سینه‌ها</string>
+    <string name="mood1">معمولی</string>
+    <string name="mood2">خوشحال</string>
+    <string name="mood3">ناراحت</string>
+    <string name="mood4">عصبانی</string>
+    <string name="tool1">نوار بهداشتی</string>
+    <string name="tool2">تامپون</string>
+    <string name="tool3">کاپ</string>
+    <string name="tool4">پد روزانه</string>
 </resources>

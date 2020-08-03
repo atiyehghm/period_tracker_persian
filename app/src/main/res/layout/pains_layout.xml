@@ -32,7 +32,7 @@
         android:id="@+id/pain3"
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:src="@drawable/breast1"
+        android:src="@drawable/breast"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_toRightOf="@id/pain2"
