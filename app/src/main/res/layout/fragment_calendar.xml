@@ -50,10 +50,10 @@
                 android:layout_below="@id/persianCalendar">
 
                 <Button
-                    android:id="@+id/mark_some_days"
+                    android:id="@+id/actualPeriod"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="به روز رسانی اطلاعات"
+                    android:text="@string/actualPeriod"
                     android:textColor="#a877bf"
                     android:background="@drawable/textview_background" />
 
@@ -61,7 +61,7 @@
                     android:id="@+id/edit_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/mark_some_days"
+                    android:layout_below="@id/actualPeriod"
                     android:layout_marginTop="5dp"
                     android:text="اصلاح اطلاعات"
                     android:textColor="#a877bf"

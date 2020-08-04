@@ -18,13 +18,67 @@
         android:layout_marginTop="25dp"
         android:hint="@string/periodEdit" />
 
-    <EditText
-        android:id="@+id/lastDate"
+
+        <RelativeLayout
+        android:id="@+id/another_calendar_re_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/period"
-        android:layout_marginTop="25dp"
-        android:hint="@string/lastDateEdit"
-        android:inputType="datetime" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="30dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp"
+        android:background="@drawable/re_layout_background"
+        android:layout_below="@+id/period">
+
+            <NumberPicker
+                android:id="@+id/lastPeriodYear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="70dp"
+                android:layout_marginTop="35dp" />
+
+            <NumberPicker
+                android:id="@+id/lastPeriodMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="35dp"
+                android:layout_toEndOf="@+id/lastPeriodYear"
+                android:layout_toRightOf="@+id/lastPeriodYear" />
+
+            <NumberPicker
+                android:id="@+id/lastPeriodDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="35dp"
+                android:layout_toEndOf="@+id/lastPeriodMonth"
+                android:layout_toRightOf="@+id/lastPeriodMonth" />
+
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/lastPeriod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lastDateEdit"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#a877bf"
+            android:background="@drawable/textview_background"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/period"
+            android:layout_marginTop="15dp"/>
 
 </RelativeLayout>
