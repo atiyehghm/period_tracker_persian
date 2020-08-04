@@ -9,14 +9,17 @@
     <RelativeLayout
         android:id="@+id/mood1_container"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         >
 
         <ImageView
             android:id="@+id/mood1"
             android:layout_width="75dp"
             android:layout_height="75dp"
+            android:padding="5dp"
             android:src="@drawable/normal"
+            android:layout_centerHorizontal="true"
             />
 
         <TextView
@@ -24,42 +27,51 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/mood1"
-            android:text="This is an image"
+            android:text="@string/mood1"
+            android:layout_centerHorizontal="true"
             android:textColor="#000000" />
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/mood2_container"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:weightSum="8"
-        android:orientation="vertical">
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        >
 
         <ImageView
             android:id="@+id/mood2"
             android:layout_width="75dp"
             android:layout_height="75dp"
+            android:padding="5dp"
             android:src="@drawable/happy"
+            android:layout_centerHorizontal="true"
+
             />
 
         <TextView
             android:id="@+id/mood_text2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="This is an image"
+            android:text="@string/mood2"
             android:layout_below="@+id/mood2"
+            android:layout_centerHorizontal="true"
+
             android:textColor="#000000" />
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/mood3_container"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         >
 
         <ImageView
             android:id="@+id/mood3"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="@dimen/image_size_medium"
+            android:layout_height="@dimen/image_size_medium"
+            android:padding="5dp"
             android:src="@drawable/angry"
+            android:layout_centerHorizontal="true"
             />
 
         <TextView
@@ -67,27 +79,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/mood3"
-            android:text="This is an image"
+            android:text="@string/mood3"
+            android:layout_centerHorizontal="true"
             android:textColor="#000000" />
     </RelativeLayout>
     <RelativeLayout
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         >
 
         <ImageView
             android:id="@+id/mood4"
             android:layout_width="75dp"
             android:layout_height="75dp"
+            android:padding="5dp"
             android:src="@drawable/sad"
+            android:layout_centerHorizontal="true"
             />
 
         <TextView
             android:id="@+id/mood_text4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="This is an image"
+            android:text="@string/mood4"
             android:layout_below="@+id/mood4"
+            android:layout_centerHorizontal="true"
             android:textColor="#000000" />
     </RelativeLayout>
 

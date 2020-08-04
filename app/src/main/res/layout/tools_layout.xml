@@ -6,46 +6,102 @@
     android:layout_height="wrap_content"
     android:padding="8dp"
     >
+    <RelativeLayout
+        android:id="@+id/tool1_container"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        >
 
-    <ImageView
-        android:id="@+id/tool1"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:src="@drawable/pad"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        />
+        <ImageView
+            android:id="@+id/tool1"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:src="@drawable/pad"
+            android:layout_centerHorizontal="true"
+            />
 
-    <ImageView
-        android:id="@+id/tool2"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:src="@drawable/tampon"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_toRightOf="@id/tool1"
-        android:layout_toEndOf="@id/tool1"
+        <TextView
+            android:id="@+id/tool_text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tool1"
+            android:text="@string/tool1"
+            android:layout_centerHorizontal="true"
+            android:textColor="#000000" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/tool2_container"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        >
 
-        />
+        <ImageView
+            android:id="@+id/tool2"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:src="@drawable/tampon"
+            android:layout_centerHorizontal="true"
 
-    <ImageView
-        android:id="@+id/tool3"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:src="@drawable/pinty_liner"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_toRightOf="@id/tool2"
-        android:layout_toEndOf="@id/tool2" />
+            />
 
-    <ImageView
-        android:id="@+id/tool4"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:src="@drawable/cup"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_toRightOf="@id/tool3"
-        android:layout_toEndOf="@id/tool3"
-        />
+        <TextView
+            android:id="@+id/tool_text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tool2"
+            android:layout_below="@+id/tool2"
+            android:layout_centerHorizontal="true"
+
+            android:textColor="#000000" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/tool3_container"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        >
+
+        <ImageView
+            android:id="@+id/tool3"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:src="@drawable/cup"
+            android:layout_centerHorizontal="true"
+            />
+
+        <TextView
+            android:id="@+id/tool_text3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tool3"
+            android:text="@string/tool3"
+            android:layout_centerHorizontal="true"
+            android:textColor="#000000" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        >
+
+        <ImageView
+            android:id="@+id/tool4"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:src="@drawable/panty_liner"
+            android:layout_centerHorizontal="true"
+            />
+
+        <TextView
+            android:id="@+id/tool_text4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tool4"
+            android:layout_below="@+id/tool4"
+            android:layout_centerHorizontal="true"
+            android:textColor="#000000" />
+    </RelativeLayout>
+
 </LinearLayout>

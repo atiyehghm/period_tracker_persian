@@ -1,9 +1,12 @@
 package edu.sharif.periodtracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +18,10 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import org.joda.time.DateTime;
+
+import edu.sharif.periodtracker.libs.DateConverter;
+import edu.sharif.periodtracker.ui.add.SaveInfoDialog;
 import edu.sharif.periodtracker.ui.calendar.CalendarFragment;
 import edu.sharif.periodtracker.ui.content.ContentFragment;
 import edu.sharif.periodtracker.ui.home.HomeFragment;
@@ -22,15 +29,15 @@ import edu.sharif.periodtracker.ui.report.ReportFragment;
 
 public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
+    private FloatingActionButton addButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.toolbar);
+        addButton = findViewById(R.id.add_button);
         setSupportActionBar(toolbar);
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         loadFragment(new HomeFragment(), R.string.title_home);
         navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener(){
 
@@ -59,6 +66,20 @@ public class MainActivity extends AppCompatActivity {
                 return loadFragment(fragment, title);
             }
         });
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSaveInfoPage();
+            }
+        });
+    }
+
+    private void openSaveInfoPage(){
+        String value= DateConverter.dateToString(new DateTime());
+        Intent i = new Intent(MainActivity.this, SaveInfoDialog.class);
+        i.putExtra("date",value);
+        startActivity(i);
     }
     private boolean loadFragment(Fragment fragment, int title) {
         //switching fragment
