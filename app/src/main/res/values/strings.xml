@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">periodTracker</string>
+    <string name="app_name">بانوان کلندر</string>
     <string name="title_home">خانه</string>
     <string name="title_calendar">تقویم</string>
     <string name="title_add">افزودن</string>
@@ -10,5 +10,23 @@
     <string name="lastDateEdit">تاریخ شروع آخرین پریود</string>
     <string name="editInfo">اصلاح اطلاعات </string>
     <string name="cancel">انصراف</string>
+
     <string name="done">تمام</string>
+    <string name="choosePainPart">درد داری؟ کجا؟</string>
+    <string name="chooseMood">حالت چجوریه؟</string>
+    <string name="chooseTool">از کدوم وسیله داری استفاده می‌کنی؟</string>
+    <string name="pain1">زیر شکم</string>
+    <string name="pain2">سر</string>
+    <string name="pain3">کمر</string>
+    <string name="pain4">سینه‌ها</string>
+    <string name="mood1">معمولی</string>
+    <string name="mood2">خوشحال</string>
+    <string name="mood3">عصبانی</string>
+    <string name="mood4">ناراحت</string>
+    <string name="tool1">نوار بهداشتی</string>
+    <string name="tool2">تامپون</string>
+    <string name="tool3">کاپ</string>
+    <string name="tool4">پد روزانه</string>
+
+    <string name="isPeriod">پریود شدی؟</string>
 </resources>
