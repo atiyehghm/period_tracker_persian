@@ -14,7 +14,7 @@ public class DateConverter {
     static DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     @TypeConverter
-    public static DateTime fromTimestamp(String value) {
+    public static DateTime stringToDate(String value) {
         if (value != null) {
             try {
                 return df.parseDateTime(value);
@@ -26,9 +26,8 @@ public class DateConverter {
             return null;
         }
     }
-
     @TypeConverter
-    public static String dateToTimestamp(DateTime value) {
+    public static String dateToString(DateTime value) {
         return value == null ? null : value.toString(df);
     }
 }

@@ -42,7 +42,6 @@ public class CalendarFragment extends Fragment implements EditInfoDialog.EditInf
                 openDialog();
             }
         });
-
         return root;
     }
 

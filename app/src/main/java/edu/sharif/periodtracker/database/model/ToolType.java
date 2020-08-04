@@ -4,18 +4,14 @@ import edu.sharif.periodtracker.MyApplication;
 import edu.sharif.periodtracker.R;
 
 public enum ToolType {
-    NONE(0),
+    NONE(0, "", 0),
     PAD(1, MyApplication.getContext().getString(R.string.tool1), R.drawable.pad),
     TAMPON(2, MyApplication.getContext().getString(R.string.tool2), R.drawable.tampon),
     CUP(3, MyApplication.getContext().getString(R.string.tool3), R.drawable.cup),
     PANTY_LINER(4, MyApplication.getContext().getString(R.string.tool4), R.drawable.panty_liner);
-    final int id;
+    private int id;
     private String name;
     private int picId;
-
-    ToolType(int id) {
-        this.id = id;
-    }
 
     ToolType(int id, String name, int picId) {
         this.id = id;

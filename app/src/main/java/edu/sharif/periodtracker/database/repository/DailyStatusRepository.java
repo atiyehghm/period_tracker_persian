@@ -77,7 +77,7 @@ public class DailyStatusRepository {
     }
 
     public LiveData<DailyStatus> getCurrentStatus(DateTime dateTime) {
-        String date = DateConverter.dateToTimestamp(dateTime);
+        String date = DateConverter.dateToString(dateTime);
         return dailyStatusDatabase.dao().getStatus(date);
     }
 

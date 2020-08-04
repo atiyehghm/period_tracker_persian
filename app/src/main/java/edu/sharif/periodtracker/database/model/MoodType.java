@@ -1,27 +1,27 @@
 package edu.sharif.periodtracker.database.model;
 
+import android.graphics.drawable.Drawable;
+
+import androidx.core.content.ContextCompat;
+
 import edu.sharif.periodtracker.MyApplication;
 import edu.sharif.periodtracker.R;
 
 public enum MoodType {
-    NONE(0),
-    NORMAL(1 , MyApplication.getContext().getString(R.string.mood1), R.drawable.normal ),
-    HAPPY(2, MyApplication.getContext().getString(R.string.mood2), R.drawable.happy),
-    SAD(3, MyApplication.getContext().getString(R.string.mood3), R.drawable.sad),
-    ANGRY(4, MyApplication.getContext().getString(R.string.mood4), R.drawable.angry);
+    NONE(-1, "", null),
+    NORMAL(0, MyApplication.getContext().getString(R.string.mood1), ContextCompat.getDrawable(MyApplication.getContext(), R.drawable.normal)),
+    HAPPY(1, MyApplication.getContext().getString(R.string.mood2), ContextCompat.getDrawable(MyApplication.getContext(), R.drawable.happy)),
+    SAD(2, MyApplication.getContext().getString(R.string.mood3), ContextCompat.getDrawable(MyApplication.getContext(), R.drawable.sad)),
+    ANGRY(3, MyApplication.getContext().getString(R.string.mood4), ContextCompat.getDrawable(MyApplication.getContext(), R.drawable.angry));
 
-    final int id;
+    private int id;
     private String name;
-    private int picId;
+    private Drawable pic;
 
-    MoodType(int id, String name, int picId) {
+    MoodType(int id, String name, Drawable pic) {
         this.id = id;
         this.name = name;
-        this.picId = picId;
-    }
-
-    MoodType(int id) {
-        this.id = id;
+        this.pic = pic;
     }
 
 
@@ -33,7 +33,23 @@ public enum MoodType {
         return name;
     }
 
-    public int getPicId() {
-        return picId;
+    public Drawable getPic() {
+        return pic;
+    }
+
+    public static MoodType getMoodTypeFromId(int id) {
+        if (id == NONE.id) {
+            return NONE;
+        } else if (id == NORMAL.id) {
+            return NORMAL;
+        } else if (id == HAPPY.id) {
+            return HAPPY;
+        } else if (id == SAD.id) {
+            return SAD;
+        } else if (id == ANGRY.id) {
+            return ANGRY;
+        } else {
+            return NONE;
+        }
     }
 }
