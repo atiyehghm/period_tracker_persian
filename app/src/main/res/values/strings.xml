@@ -12,6 +12,8 @@
     <string name="cancel">انصراف</string>
 
     <string name="done">تمام</string>
+    <string name="actualPeriod">اصلاح زمان قاعدگی</string>
+    <string name="actualPeriodTitle">اصلاح زمان قاعدگی</string>
     <string name="choosePainPart">درد داری؟ کجا؟</string>
     <string name="chooseMood">حالت چجوریه؟</string>
     <string name="chooseTool">از کدوم وسیله داری استفاده می‌کنی؟</string>
@@ -27,6 +29,5 @@
     <string name="tool2">تامپون</string>
     <string name="tool3">کاپ</string>
     <string name="tool4">پد روزانه</string>
-
     <string name="isPeriod">پریود شدی؟</string>
 </resources>
