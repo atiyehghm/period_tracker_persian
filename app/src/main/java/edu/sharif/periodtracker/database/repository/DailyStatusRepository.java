@@ -72,8 +72,8 @@ public class DailyStatusRepository {
         }.execute();
     }
 
-    public LiveData<List<DailyStatus>> getAllStatus() {
-        return dailyStatusDatabase.dao().fetchAllDailyStatus();
+    public LiveData<List<DailyStatus>> getAllStatus(Boolean tp) {
+        return dailyStatusDatabase.dao().fetchAllDailyStatus(tp);
     }
 
     public LiveData<DailyStatus> getCurrentStatus(DateTime dateTime) {
@@ -91,4 +91,13 @@ public class DailyStatusRepository {
         }.execute();
     }
 
+    public void updateEndStatus(final String dateTime, final Boolean end) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                dailyStatusDatabase.dao().updateEnd(dateTime, end);
+                return null;
+            }
+        }.execute();
+    }
 }

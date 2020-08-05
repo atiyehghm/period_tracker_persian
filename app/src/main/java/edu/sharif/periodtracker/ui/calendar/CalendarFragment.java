@@ -1,5 +1,6 @@
 package edu.sharif.periodtracker.ui.calendar;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -26,7 +27,15 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.chrono.PersianChronologyKhayyam;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.sharif.periodtracker.MainActivity;
 import edu.sharif.periodtracker.R;
+import edu.sharif.periodtracker.database.model.DailyStatus;
+import edu.sharif.periodtracker.database.repository.DailyStatusRepository;
+import edu.sharif.periodtracker.libs.DateConverter;
+import edu.sharif.periodtracker.ui.add.SaveInfoDialog;
 
 public class CalendarFragment extends Fragment implements EditInfoDialog.EditInfoDialogListener, ActualPeriodDialog.ActualPeriodDialogListener {
     private PersianHorizontalExpCalendar persianHorizontalExpCalendar;
@@ -36,6 +45,9 @@ public class CalendarFragment extends Fragment implements EditInfoDialog.EditInf
     private Integer cycle, period;
     private Chronology perChr = PersianChronologyKhayyam.getInstance(DateTimeZone.forID("Asia/Tehran"));
     private DateTime lastPeriod;
+    private DailyStatusRepository dailyStatusRepo;
+    private ArrayList<DateTime> startDays = new ArrayList<>();
+    private ArrayList<DateTime> endDays = new ArrayList<>();
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -43,14 +55,36 @@ public class CalendarFragment extends Fragment implements EditInfoDialog.EditInf
         //default values
         period = 7; cycle = 28; lastPeriod = new DateTime(1300, 1, 1, 0, 0, 0, perChr);
         reportViewModel = ViewModelProviders.of(this).get(CalendarViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_calendar, container, false);
+        final View root = inflater.inflate(R.layout.fragment_calendar, container, false);
         persianHorizontalExpCalendar = root.findViewById(R.id.persianCalendar);
+        persianHorizontalExpCalendar
+                .setPersianHorizontalExpCalListener(new PersianHorizontalExpCalendar.PersianHorizontalExpCalListener() {
+                    @Override
+                    public void onCalendarScroll(DateTime dateTime) {
+                    }
+
+                    @Override
+                    public void onDateSelected(DateTime dateTime) {
+                        String value= DateConverter.dateToString(dateTime);
+                        Intent i = new Intent(root.getContext(), SaveInfoDialog.class);
+                        i.putExtra(SaveInfoDialog.KEY_DATE_EDIT, value);
+                        startActivity(i);
+                        markPeriodDate();
+                    }
+
+                    @Override
+                    public void onChangeViewPager(PersianViewPagerType persianViewPagerType) {
+
+                    }
+
+                });
         editInfo = root.findViewById(R.id.edit_info);
         actualPeriod = root.findViewById(R.id.actualPeriod);
         actualPeriod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openActualPeriodDialog();
+                //openActualPeriodDialog();
+                markPeriodDate();
             }
         });
         editInfo.setOnClickListener(new View.OnClickListener() {
@@ -62,15 +96,33 @@ public class CalendarFragment extends Fragment implements EditInfoDialog.EditInf
         return root;
     }
 
+    private void markPeriodDate() {
+        dailyStatusRepo = new DailyStatusRepository(this.getContext());
+        dailyStatusRepo.getAllStatus(true).observe(getViewLifecycleOwner(), new Observer<List<DailyStatus>>() {
+            @Override
+            public void onChanged(List<DailyStatus> dailyStatuses) {
+                if(dailyStatuses != null){
+                    String temp = dailyStatuses.get(0).getDate().toString();
+                    Log.i("$$$$$$$$", temp);
+                    for(int i = 0; i < dailyStatuses.size(); i++){
+                        persianHorizontalExpCalendar.markDate(dailyStatuses.get(i).getDate(), new CustomGradientDrawable(GradientDrawable.RECTANGLE, Color.parseColor("#35a677bd"))
+                                                .setstroke(1, Color.parseColor("#a677bd")));
+                    }
+                    findStartDays(dailyStatuses);
+                }
+            }
+        });
+    }
+
     private void openEditInfoDialog() {
         EditInfoDialog editInfoDialog = EditInfoDialog.getInstance(CalendarFragment.this, this.cycle, this.period);
         editInfoDialog.show(getActivity().getSupportFragmentManager(), "Edit info Dialog");
     }
 
-    private void openActualPeriodDialog(){
-        ActualPeriodDialog actualPeriodDialog = ActualPeriodDialog.getInstance(CalendarFragment.this);
-        actualPeriodDialog.show(getActivity().getSupportFragmentManager(), "Actual Period Dialog");
-    }
+//    private void openActualPeriodDialog(){
+//        ActualPeriodDialog actualPeriodDialog = ActualPeriodDialog.getInstance(CalendarFragment.this);
+//        actualPeriodDialog.show(getActivity().getSupportFragmentManager(), "Actual Period Dialog");
+//    }
 
     @Override
     public void ApplyInfo(Integer cycle, Integer period, DateTime lastPeriod) {
@@ -90,7 +142,7 @@ public class CalendarFragment extends Fragment implements EditInfoDialog.EditInf
                             new CustomGradientDrawable(GradientDrawable.RECTANGLE, Color.parseColor("#35a677bd"))
                                     .setstroke(1, Color.parseColor("#a677bd")));
         }
-        //for all the months
+        //for all the months predict period time
         DateTime startDate = this.lastPeriod;
         for(int i = 1; i < 12; i++){
             startDate = new DateTime(startDate.getYear(), startDate.getMonthOfYear(), startDate.getDayOfMonth(), 0 ,0,0 , perChr).plusDays(cycle);
@@ -110,5 +162,19 @@ public class CalendarFragment extends Fragment implements EditInfoDialog.EditInf
     @Override
     public void ApplyDate(DateTime startDate, DateTime endDate) {
 
+    }
+
+    void findStartDays(List<DailyStatus> dailyStatuses){
+        DailyStatus start = dailyStatuses.get(0);
+        startDays.add(start.getDate());
+        for (int i = 1; i < dailyStatuses.size(); i++) {
+            DailyStatus sd = dailyStatuses.get(i);
+            if(sd.getDate().minusDays(10).compareTo(start.getDate()) > 0)
+            {
+                startDays.add(sd.getDate());
+                endDays.add(dailyStatuses.get(i - 1).getDate());
+                start = sd;
+            }
+        }
     }
 }
