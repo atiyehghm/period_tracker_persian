@@ -4,12 +4,18 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 
-import androidx.appcompat.widget.Toolbar;
-
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +23,26 @@ import java.util.List;
 import edu.sharif.periodtracker.R;
 import edu.sharif.periodtracker.database.model.DailyStatus;
 import edu.sharif.periodtracker.database.model.MoodType;
+import edu.sharif.periodtracker.database.model.PainType;
+import edu.sharif.periodtracker.database.model.ToolType;
+import edu.sharif.periodtracker.database.repository.DailyStatusRepository;
+import edu.sharif.periodtracker.libs.DateConverter;
 
 public class SaveInfoDialog extends AppCompatActivity {
-    public static final String KEY_ID_EDIT = "key_id_edit";
+    public static final String KEY_DATE_EDIT = "KEY_DATE_EDIT";
+    private static final String MOOD = "MOOD";
+    private static final String TOOL = "TOOL";
+    private static final String PAIN = "PAIN";
+    private boolean isInEditMood = false;
     private Toolbar toolbar;
     private List<ImageView> listMoodImages = new ArrayList<>();
+    private List<ImageView> listPainImages = new ArrayList<>();
+    private List<ImageView> listToolImages = new ArrayList<>();
+    private Switch periodSwitch;
     private DailyStatus dailyStatus = new DailyStatus();
     private Drawable highlight;
+    private LiveData<DailyStatus> dailyStatusLiveData;
+    private DailyStatusRepository dailyStatusRepo;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,25 +51,45 @@ public class SaveInfoDialog extends AppCompatActivity {
         getViewFromXml();
         getResource();
         getBundle();
-        configureBackButton();
-        controller();
         initialView();
+        controller();
     }
 
-    private void getBundle() {
-        int id = getIntent().getIntExtra(KEY_ID_EDIT, -1);
-
-        if (dailyStatus == null){
-            dailyStatus = new DailyStatus();
-//            dailyStatus
-        }
-
-    }
 
     private void initialView() {
-        refreshViewMood();
+
+        dailyStatusRepo = new DailyStatusRepository(this);
+        dailyStatusRepo.getCurrentStatus(dailyStatus.getDate()).observe(this, new Observer<DailyStatus>() {
+            @Override
+            public void onChanged(@Nullable DailyStatus status) {
+                if (status != null) {
+                    dailyStatus = status;
+                    isInEditMood = true;
+
+                    int selectedMoodIndex = dailyStatus.getMood() != null ? dailyStatus.getMood().getId() : -1;
+                    int selectedPainIndex = dailyStatus.getPain() != null ? dailyStatus.getPain().getId() : -1;
+                    int selectedToolIndex = dailyStatus.getTool() !=null ? dailyStatus.getTool().getId() : -1;
+                    periodSwitch.setChecked(dailyStatus.isIs_period());
+
+                    refreshViewMood(selectedMoodIndex, listMoodImages, MOOD);
+                    refreshViewMood(selectedPainIndex, listPainImages, PAIN);
+                    refreshViewMood(selectedToolIndex, listToolImages, TOOL);
+                }
+                else{
+                    isInEditMood = false;
+                }
+            }
+        });
     }
 
+    private void saveChanges() {
+        if (isInEditMood){
+            dailyStatusRepo.updateCurrentStatus(dailyStatus);
+        }
+        else {
+            dailyStatusRepo.insertStatus(dailyStatus);
+        }
+    }
 
     private void configureBackButton() {
         setSupportActionBar(toolbar);
@@ -59,61 +98,107 @@ public class SaveInfoDialog extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                saveChanges();
                 onBackPressed();
             }
         });
     }
 
-    private void getViewFromXml() {
-        toolbar = findViewById(R.id.toolbar);
-        listMoodImages.add((ImageView) findViewById(R.id.mood1));
-        listMoodImages.add((ImageView) findViewById(R.id.mood2));
-        listMoodImages.add((ImageView) findViewById(R.id.mood3));
-        listMoodImages.add((ImageView) findViewById(R.id.mood4));
+    private void refreshViewMood(int index, List<ImageView> list, String propertyType) {
+        for (int i = 0; i < list.size(); i++) {
+            if (i == index) {
+                if (list.get(i).getBackground() == null){
+                    list.get(i).setBackground(highlight);
+                    setObjectData(index, propertyType);
+                }
+                else {
+                    list.get(i).setBackground(null);
+                    setObjectData(-1, propertyType);
+                }
+
+            } else {
+                list.get(i).setBackground(null);
+            }
+        }
     }
 
-    private void controller() {
-        for (int i = 0; i < listMoodImages.size(); i++) {
-            final int ii = i;
-            listMoodImages.get(i).setOnClickListener(new View.OnClickListener() {
+    private void setObjectData(int index, String propertyType) {
+
+        switch (propertyType){
+            case MOOD:
+                dailyStatus.setMood(MoodType.getTypeFromId(index));
+                break;
+            case TOOL:
+                dailyStatus.setTool(ToolType.getTypeFromId(index));
+                break;
+            case PAIN:
+                dailyStatus.setPain(PainType.getTypeFromId(index));
+                break;
+        }
+    }
+
+    private void imagesRowController(final List<ImageView> list, final String propertyType ){
+        for (int i = 0; i < list.size(); i++) {
+            final int index = i;
+            list.get(i).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    clickItemMood(ii);
+                    refreshViewMood(index, list, propertyType);
                 }
             });
         }
     }
 
-    private void clickItemMood(int index) {
-        dailyStatus.setMood(MoodType.getMoodTypeFromId(index));
-        refreshViewMood();
-    }
+    private void controller() {
+        configureBackButton();
+        imagesRowController(listMoodImages, MOOD);
+        imagesRowController(listPainImages, PAIN);
+        imagesRowController(listToolImages, TOOL);
 
-    private void refreshViewMood() {
-        for (int i = 0; i < listMoodImages.size(); i++) {
-            if (i == dailyStatus.getMood().getId()) {
-                listMoodImages.get(i).setBackground(highlight);
-            } else {
-                listMoodImages.get(i).setBackground(null);
+        periodSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    dailyStatus.setIs_period(true);
+                }
+                else {
+                    dailyStatus.setIs_period(false);
+                }
             }
-        }
+        });
     }
 
-//    public void onClick(View v, int[] imagesViewArr) {
-//        ImageView imageView;
-//        final String PACKAGE_ID = "edu.sharif.periodtracker:id/";
-//        for (int imgId : imagesViewArr) {
-//            String tmp = getResources().getResourceName(imgId);
-//            if (tmp != null && !tmp.startsWith(PACKAGE_ID)) {
-//                if (v.getId() == imgId) {
-//                    imageView = findViewById(imgId);
-//
-//                }
-//            }
-//        }
-//
-//    }
+    private void getBundle() {
+        //Get dailyStatus object with corresponding date
 
+        String dateInString = getIntent().getStringExtra(KEY_DATE_EDIT);
+        final DateTime date = DateConverter.stringToDate(dateInString);
+        if (dailyStatus == null){
+            dailyStatus = new DailyStatus();
+        }
+        dailyStatus.setDate(date);
+
+    }
+
+    private void getViewFromXml() {
+        toolbar = findViewById(R.id.toolbar);
+
+        listMoodImages.add((ImageView) findViewById(R.id.mood1));
+        listMoodImages.add((ImageView) findViewById(R.id.mood2));
+        listMoodImages.add((ImageView) findViewById(R.id.mood3));
+        listMoodImages.add((ImageView) findViewById(R.id.mood4));
+
+        listPainImages.add((ImageView) findViewById(R.id.pain1));
+        listPainImages.add((ImageView) findViewById(R.id.pain2));
+        listPainImages.add((ImageView) findViewById(R.id.pain3));
+        listPainImages.add((ImageView) findViewById(R.id.pain4));
+
+        listToolImages.add((ImageView) findViewById(R.id.tool1));
+        listToolImages.add((ImageView) findViewById(R.id.tool2));
+        listToolImages.add((ImageView) findViewById(R.id.tool3));
+        listToolImages.add((ImageView) findViewById(R.id.tool4));
+
+        periodSwitch = findViewById(R.id.perios_switch);
+    }
 
     private void getResource() {
         highlight = getResources().getDrawable(R.drawable.selected_image);

@@ -17,7 +17,8 @@ import edu.sharif.periodtracker.libs.MoodConverter;
 import edu.sharif.periodtracker.libs.PainConverter;
 import edu.sharif.periodtracker.libs.ToolConverter;
 
-@Entity
+@Entity(indices = {@Index(value = "date",
+        unique = true)})
 public class DailyStatus{
 
     @PrimaryKey(autoGenerate = true)
@@ -38,8 +39,8 @@ public class DailyStatus{
     @ColumnInfo(defaultValue = "0")
     private ToolType tool;
 
-    @ColumnInfo(name = "is_period", defaultValue = "false")
-    private boolean isPeriod;
+    @ColumnInfo(defaultValue = "false")
+    private boolean is_period;
 
     public DailyStatus() {
         date = new DateTime();
@@ -87,11 +88,11 @@ public class DailyStatus{
         this.tool = tool;
     }
 
-    public boolean isPeriod() {
-        return isPeriod;
+    public boolean isIs_period() {
+        return is_period;
     }
 
-    public void setIsPeriod(boolean isPeriod) {
-        isPeriod = isPeriod;
+    public void setIs_period(boolean is_period) {
+        this.is_period = is_period;
     }
 }

@@ -37,7 +37,7 @@ public enum MoodType {
         return pic;
     }
 
-    public static MoodType getMoodTypeFromId(int id) {
+    public static MoodType getTypeFromId(int id) {
         if (id == NONE.id) {
             return NONE;
         } else if (id == NORMAL.id) {

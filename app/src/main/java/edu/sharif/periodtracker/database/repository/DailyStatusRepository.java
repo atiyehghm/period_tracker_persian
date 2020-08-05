@@ -43,18 +43,18 @@ public class DailyStatusRepository {
         status.setMood(mood);
         status.setPain(pain);
         status.setTool(tool);
-        status.setIsPeriod(isPeriod);
+        status.setIs_period(isPeriod);
 
 
         if(isPeriod) {
-            status.setIsPeriod(true);
-        } else status.setIsPeriod(false);
+            status.setIs_period(true);
+        } else status.setIs_period(false);
         if(mood != null) {
             status.setMood(mood);
         } else status.setMood(MoodType.NONE);
         if(pain != null) {
             status.setPain(pain);
-        } else status.setPain(PainType.NO_PAIN);
+        } else status.setPain(PainType.NONE);
         if(tool != null) {
             status.setTool(tool);
         } else status.setTool(ToolType.NONE);
@@ -79,6 +79,16 @@ public class DailyStatusRepository {
     public LiveData<DailyStatus> getCurrentStatus(DateTime dateTime) {
         String date = DateConverter.dateToString(dateTime);
         return dailyStatusDatabase.dao().getStatus(date);
+    }
+
+    public void updateCurrentStatus(final DailyStatus status) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                dailyStatusDatabase.dao().updateStatus(status);
+                return null;
+            }
+        }.execute();
     }
 
 }

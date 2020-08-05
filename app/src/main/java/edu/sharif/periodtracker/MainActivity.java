@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     private void openSaveInfoPage(){
         String value= DateConverter.dateToString(new DateTime());
         Intent i = new Intent(MainActivity.this, SaveInfoDialog.class);
-        i.putExtra("date",value);
+        i.putExtra(SaveInfoDialog.KEY_DATE_EDIT, value);
         startActivity(i);
     }
     private boolean loadFragment(Fragment fragment, int title) {
