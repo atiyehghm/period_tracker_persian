@@ -6,13 +6,13 @@ public class Article implements Serializable {
     private String title;
     private String description;
     private String content;
-    private int imgId;
+    private String imgName;
 
-    public Article(String title, String description, String content, int imgId) {
+    public Article(String title, String description, String content, String imgName) {
         this.title = title;
         this.description = description;
         this.content = content;
-        this.imgId = imgId;
+        this.imgName = imgName;
     }
 
     public String getTitle() {
@@ -39,11 +39,11 @@ public class Article implements Serializable {
         this.content = content;
     }
 
-    public int getImgId() {
-        return imgId;
+    public String getImgName() {
+        return imgName;
     }
 
-    public void setImgId(int imgId) {
-        this.imgId = imgId;
+    public void setImgName(String imgName) {
+        this.imgName = imgName;
     }
 }

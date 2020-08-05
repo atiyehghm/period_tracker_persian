@@ -7,4 +7,6 @@
     <color name="colorToolbar">#3CCAC9C9</color>
     <color name="colorWhite">#E8FFFFFF</color>
     <color name="colorRed">#DA040B</color>
+    <color name="colorGrey">#454343</color>
+    <color name="colorGrey1">#2B2929</color>
 </resources>
