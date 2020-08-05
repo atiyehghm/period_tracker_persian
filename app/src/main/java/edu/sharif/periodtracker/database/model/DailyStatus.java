@@ -42,6 +42,28 @@ public class DailyStatus{
     @ColumnInfo(defaultValue = "false")
     private boolean is_period;
 
+    @ColumnInfo(defaultValue = "false")
+    private boolean is_start;
+
+    @ColumnInfo(defaultValue = "false")
+    private boolean is_end;
+
+    public boolean isIs_start() {
+        return is_start;
+    }
+
+    public void setIs_start(boolean is_start) {
+        this.is_start = is_start;
+    }
+
+    public boolean isIs_end() {
+        return is_end;
+    }
+
+    public void setIs_end(boolean is_end) {
+        this.is_end = is_end;
+    }
+
     public DailyStatus() {
         date = new DateTime();
     }

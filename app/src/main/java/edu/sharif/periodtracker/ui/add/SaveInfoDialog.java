@@ -3,6 +3,7 @@ package edu.sharif.periodtracker.ui.add;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -27,6 +28,7 @@ import edu.sharif.periodtracker.database.model.PainType;
 import edu.sharif.periodtracker.database.model.ToolType;
 import edu.sharif.periodtracker.database.repository.DailyStatusRepository;
 import edu.sharif.periodtracker.libs.DateConverter;
+import edu.sharif.periodtracker.ui.calendar.CalendarFragment;
 
 public class SaveInfoDialog extends AppCompatActivity {
     public static final String KEY_DATE_EDIT = "KEY_DATE_EDIT";
@@ -43,6 +45,8 @@ public class SaveInfoDialog extends AppCompatActivity {
     private Drawable highlight;
     private LiveData<DailyStatus> dailyStatusLiveData;
     private DailyStatusRepository dailyStatusRepo;
+    private DateTime today , yesterday;
+    private Boolean yesterday_period;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +61,6 @@ public class SaveInfoDialog extends AppCompatActivity {
 
 
     private void initialView() {
-
         dailyStatusRepo = new DailyStatusRepository(this);
         dailyStatusRepo.getCurrentStatus(dailyStatus.getDate()).observe(this, new Observer<DailyStatus>() {
             @Override
@@ -89,6 +92,7 @@ public class SaveInfoDialog extends AppCompatActivity {
         else {
             dailyStatusRepo.insertStatus(dailyStatus);
         }
+
     }
 
     private void configureBackButton() {
@@ -149,6 +153,7 @@ public class SaveInfoDialog extends AppCompatActivity {
         }
     }
 
+
     private void controller() {
         configureBackButton();
         imagesRowController(listMoodImages, MOOD);
@@ -169,14 +174,14 @@ public class SaveInfoDialog extends AppCompatActivity {
 
     private void getBundle() {
         //Get dailyStatus object with corresponding date
-
         String dateInString = getIntent().getStringExtra(KEY_DATE_EDIT);
-        final DateTime date = DateConverter.stringToDate(dateInString);
+        today = DateConverter.stringToDate(dateInString);
         if (dailyStatus == null){
             dailyStatus = new DailyStatus();
         }
-        dailyStatus.setDate(date);
-
+        yesterday = today.minusDays(1);
+        Log.i("_________", "today is:" + DateConverter.dateToString(today) + " yesterday was: " + DateConverter.dateToString(yesterday));
+        dailyStatus.setDate(today);
     }
 
     private void getViewFromXml() {

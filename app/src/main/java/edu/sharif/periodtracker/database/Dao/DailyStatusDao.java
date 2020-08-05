@@ -17,12 +17,15 @@ public interface DailyStatusDao {
     @Insert
     Long insertStatus(DailyStatus dailyStatus);
 
-    @Query("SELECT * FROM DailyStatus ORDER BY date desc")
-    LiveData<List<DailyStatus>> fetchAllDailyStatus();
+    @Query("SELECT * FROM DailyStatus WHERE is_period =:tp ORDER BY date asc")
+    LiveData<List<DailyStatus>> fetchAllDailyStatus(Boolean tp);
 
     @Query("SELECT * FROM DailyStatus WHERE date =:dateTime")
     LiveData<DailyStatus> getStatus(String dateTime);
 
     @Update
     void updateStatus(DailyStatus dailyStatus);
+
+    @Query("UPDATE DailyStatus SET is_end =:end_bool WHERE date =:dateTime")
+    void updateEnd(String dateTime, Boolean end_bool);
 }
