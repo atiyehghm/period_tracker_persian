@@ -15,8 +15,9 @@
 
         <ImageView
             android:id="@+id/tool1"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="@dimen/image_size_medium"
+            android:layout_height="@dimen/image_size_medium"
+            android:padding="5dp"
             android:src="@drawable/pad"
             android:layout_centerHorizontal="true"
             />
@@ -39,8 +40,9 @@
 
         <ImageView
             android:id="@+id/tool2"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="@dimen/image_size_medium"
+            android:layout_height="@dimen/image_size_medium"
+            android:padding="5dp"
             android:src="@drawable/tampon"
             android:layout_centerHorizontal="true"
 
@@ -65,8 +67,9 @@
 
         <ImageView
             android:id="@+id/tool3"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="@dimen/image_size_medium"
+            android:layout_height="@dimen/image_size_medium"
+            android:padding="5dp"
             android:src="@drawable/cup"
             android:layout_centerHorizontal="true"
             />
@@ -88,8 +91,9 @@
 
         <ImageView
             android:id="@+id/tool4"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="@dimen/image_size_medium"
+            android:layout_height="@dimen/image_size_medium"
+            android:padding="5dp"
             android:src="@drawable/panty_liner"
             android:layout_centerHorizontal="true"
             />

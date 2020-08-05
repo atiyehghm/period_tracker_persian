@@ -8,11 +8,16 @@ public class PainConverter {
 
     @TypeConverter
     public static int fromPainTypeToInt(PainType value) {
-        return value.ordinal();
+        if (value != null){
+            return value.getId();
+        }
+        else {
+            return -1;
+        }
     }
 
     @TypeConverter
     public static PainType fromIntToPainType(int value) {
-        return (PainType.values()[value]);
+        return (PainType.getTypeFromId(value));
     }
 }

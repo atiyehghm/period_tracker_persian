@@ -3,6 +3,7 @@ package edu.sharif.periodtracker.database.Dao;
 import androidx.lifecycle.LiveData;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import org.joda.time.DateTime;
 
@@ -21,4 +22,7 @@ public interface DailyStatusDao {
 
     @Query("SELECT * FROM DailyStatus WHERE date =:dateTime")
     LiveData<DailyStatus> getStatus(String dateTime);
+
+    @Update
+    void updateStatus(DailyStatus dailyStatus);
 }

@@ -7,11 +7,16 @@ import edu.sharif.periodtracker.database.model.MoodType;
 public class MoodConverter {
     @TypeConverter
     public static int fromMoodTypeToInt(MoodType value) {
-        return value.ordinal();
+        if (value != null){
+            return value.getId();
+        }
+        else {
+            return -1;
+        }
     }
 
     @TypeConverter
     public static MoodType fromIntToMoodType(int value) {
-        return (MoodType.values()[value]);
+        return (MoodType.getTypeFromId(value));
     }
 }

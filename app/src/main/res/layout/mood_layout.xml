@@ -15,8 +15,8 @@
 
         <ImageView
             android:id="@+id/mood1"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="@dimen/image_size_medium"
+            android:layout_height="@dimen/image_size_medium"
             android:padding="5dp"
             android:src="@drawable/normal"
             android:layout_centerHorizontal="true"
@@ -40,8 +40,8 @@
 
         <ImageView
             android:id="@+id/mood2"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="@dimen/image_size_medium"
+            android:layout_height="@dimen/image_size_medium"
             android:padding="5dp"
             android:src="@drawable/happy"
             android:layout_centerHorizontal="true"
@@ -91,8 +91,8 @@
 
         <ImageView
             android:id="@+id/mood4"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="@dimen/image_size_medium"
+            android:layout_height="@dimen/image_size_medium"
             android:padding="5dp"
             android:src="@drawable/sad"
             android:layout_centerHorizontal="true"

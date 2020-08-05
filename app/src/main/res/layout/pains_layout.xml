@@ -15,8 +15,9 @@
 
         <ImageView
             android:id="@+id/pain1"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="@dimen/image_size_medium"
+            android:layout_height="@dimen/image_size_medium"
+            android:padding="5dp"
             android:src="@drawable/abdominal"
             android:layout_centerHorizontal="true"
             />
@@ -39,8 +40,9 @@
 
         <ImageView
             android:id="@+id/pain2"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="@dimen/image_size_medium"
+            android:layout_height="@dimen/image_size_medium"
+            android:padding="5dp"
             android:src="@drawable/head"
             android:layout_centerHorizontal="true"
 
@@ -65,8 +67,9 @@
 
         <ImageView
             android:id="@+id/pain3"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="@dimen/image_size_medium"
+            android:layout_height="@dimen/image_size_medium"
+            android:padding="5dp"
             android:src="@drawable/back"
             android:layout_centerHorizontal="true"
             />
@@ -88,8 +91,9 @@
 
         <ImageView
             android:id="@+id/pain4"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="@dimen/image_size_medium"
+            android:layout_height="@dimen/image_size_medium"
+            android:padding="5dp"
             android:src="@drawable/breast"
             android:layout_centerHorizontal="true"
             />
