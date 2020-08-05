@@ -6,46 +6,106 @@
     android:layout_height="wrap_content"
     android:padding="8dp"
     >
+    <RelativeLayout
+        android:id="@+id/pain1_container"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        >
 
-    <ImageView
-        android:id="@+id/pain1"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:src="@drawable/head"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        />
+        <ImageView
+            android:id="@+id/pain1"
+            android:layout_width="@dimen/image_size_medium"
+            android:layout_height="@dimen/image_size_medium"
+            android:padding="5dp"
+            android:src="@drawable/abdominal"
+            android:layout_centerHorizontal="true"
+            />
 
-    <ImageView
-        android:id="@+id/pain2"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:src="@drawable/abdominal"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_toRightOf="@id/pain1"
-        android:layout_toEndOf="@id/pain1"
+        <TextView
+            android:id="@+id/pain_text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pain1"
+            android:text="@string/pain1"
+            android:layout_centerHorizontal="true"
+            android:textColor="#000000" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/pain2_container"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        >
 
-         />
+        <ImageView
+            android:id="@+id/pain2"
+            android:layout_width="@dimen/image_size_medium"
+            android:layout_height="@dimen/image_size_medium"
+            android:padding="5dp"
+            android:src="@drawable/head"
+            android:layout_centerHorizontal="true"
 
-    <ImageView
-        android:id="@+id/pain3"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:src="@drawable/breast1"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_toRightOf="@id/pain2"
-        android:layout_toEndOf="@id/pain2" />
+            />
 
-    <ImageView
-        android:id="@+id/pain4"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:src="@drawable/back"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_toRightOf="@id/pain3"
-        android:layout_toEndOf="@id/pain3"
-        />
+        <TextView
+            android:id="@+id/pain_text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pain2"
+            android:layout_below="@+id/pain2"
+            android:layout_centerHorizontal="true"
+
+            android:textColor="#000000" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/pain3_container"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        >
+
+        <ImageView
+            android:id="@+id/pain3"
+            android:layout_width="@dimen/image_size_medium"
+            android:layout_height="@dimen/image_size_medium"
+            android:padding="5dp"
+            android:src="@drawable/back"
+            android:layout_centerHorizontal="true"
+            />
+
+        <TextView
+            android:id="@+id/pain_text3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pain3"
+            android:text="@string/pain3"
+            android:layout_centerHorizontal="true"
+            android:textColor="#000000" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        >
+
+        <ImageView
+            android:id="@+id/pain4"
+            android:layout_width="@dimen/image_size_medium"
+            android:layout_height="@dimen/image_size_medium"
+            android:padding="5dp"
+            android:src="@drawable/breast"
+            android:layout_centerHorizontal="true"
+            />
+
+        <TextView
+            android:id="@+id/pain_text4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pain4"
+            android:layout_below="@+id/pain4"
+            android:layout_centerHorizontal="true"
+            android:textColor="#000000" />
+    </RelativeLayout>
+
 </LinearLayout>

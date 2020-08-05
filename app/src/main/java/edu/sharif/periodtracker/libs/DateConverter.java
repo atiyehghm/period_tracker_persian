@@ -1,24 +1,23 @@
 package edu.sharif.periodtracker.libs;
 
 import android.annotation.SuppressLint;
+import android.net.ParseException;
 
 import androidx.room.TypeConverter;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 public class DateConverter {
 
-    @SuppressLint("SimpleDateFormat")
-    static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    static DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     @TypeConverter
-    public static Date fromTimestamp(String value) {
+    public static DateTime stringToDate(String value) {
         if (value != null) {
             try {
-                return df.parse(value);
+                return df.parseDateTime(value);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -27,9 +26,8 @@ public class DateConverter {
             return null;
         }
     }
-
     @TypeConverter
-    public static String dateToTimestamp(Date value) {
-        return value == null ? null : df.format(value);
+    public static String dateToString(DateTime value) {
+        return value == null ? null : value.toString(df);
     }
 }

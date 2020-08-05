@@ -3,8 +3,11 @@ package edu.sharif.periodtracker.database.model;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
+
+import org.joda.time.DateTime;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,26 +17,35 @@ import edu.sharif.periodtracker.libs.MoodConverter;
 import edu.sharif.periodtracker.libs.PainConverter;
 import edu.sharif.periodtracker.libs.ToolConverter;
 
-@Entity
+@Entity(indices = {@Index(value = "date",
+        unique = true)})
 public class DailyStatus{
 
     @PrimaryKey(autoGenerate = true)
     private int id;
 
     @TypeConverters({DateConverter.class})
-    private Date date;
+    @NonNull
+    private DateTime date;
 
     @TypeConverters({PainConverter.class})
+    @ColumnInfo(defaultValue = "0")
     private PainType pain;
 
     @TypeConverters({MoodConverter.class})
     private MoodType mood;
 
     @TypeConverters({ToolConverter.class})
+    @ColumnInfo(defaultValue = "0")
     private ToolType tool;
 
-    @ColumnInfo(name = "is_period_start")
-    private boolean isPeriodStart;
+    @ColumnInfo(defaultValue = "false")
+    private boolean is_period;
+
+    public DailyStatus() {
+        date = new DateTime();
+    }
+
     public int getId() {
         return id;
     }
@@ -42,12 +54,12 @@ public class DailyStatus{
         this.id = id;
     }
 
-    public Date getDate() {
+    public DateTime getDate() {
         return date;
     }
 
     @NonNull
-    public void setDate(Date date) {
+    public void setDate(DateTime date) {
         this.date = date;
     }
 
@@ -76,11 +88,11 @@ public class DailyStatus{
         this.tool = tool;
     }
 
-    public boolean isPeriodStart() {
-        return isPeriodStart;
+    public boolean isIs_period() {
+        return is_period;
     }
 
-    public void setPeriodStart(boolean periodStart) {
-        isPeriodStart = periodStart;
+    public void setIs_period(boolean is_period) {
+        this.is_period = is_period;
     }
 }
