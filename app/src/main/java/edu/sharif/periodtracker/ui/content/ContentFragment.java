@@ -79,9 +79,9 @@ public class ContentFragment extends Fragment {
                     String title = articleObj.getString("title");
                     String desc = articleObj.getString("desc");
                     String content = articleObj.getString("content");
-                    int imgId = articleObj.getInt("imgId");
+                    String imgName = articleObj.getString("imgName");
 
-                    Article article = new Article(title, desc, content, imgId);
+                    Article article = new Article(title, desc, content, imgName);
 
                     // adding contact to contact list
                     articles.add(article);
