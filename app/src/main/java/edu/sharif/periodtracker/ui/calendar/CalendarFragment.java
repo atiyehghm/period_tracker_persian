@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.sharif.periodtracker.MainActivity;
+import edu.sharif.periodtracker.MyApplication;
 import edu.sharif.periodtracker.R;
 import edu.sharif.periodtracker.database.model.DailyStatus;
 import edu.sharif.periodtracker.database.repository.DailyStatusRepository;
@@ -46,8 +47,7 @@ public class CalendarFragment extends Fragment implements EditInfoDialog.EditInf
     private Chronology perChr = PersianChronologyKhayyam.getInstance(DateTimeZone.forID("Asia/Tehran"));
     private DateTime lastPeriod;
     private DailyStatusRepository dailyStatusRepo;
-    private ArrayList<DateTime> startDays = new ArrayList<>();
-    private ArrayList<DateTime> endDays = new ArrayList<>();
+
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -66,10 +66,9 @@ public class CalendarFragment extends Fragment implements EditInfoDialog.EditInf
                     @Override
                     public void onDateSelected(DateTime dateTime) {
                         String value= DateConverter.dateToString(dateTime);
-                        Intent i = new Intent(root.getContext(), SaveInfoDialog.class);
+                        Intent i = new Intent(MyApplication.getContext(), SaveInfoDialog.class);
                         i.putExtra(SaveInfoDialog.KEY_DATE_EDIT, value);
                         startActivity(i);
-                        markPeriodDate();
                     }
 
                     @Override
@@ -103,12 +102,12 @@ public class CalendarFragment extends Fragment implements EditInfoDialog.EditInf
             public void onChanged(List<DailyStatus> dailyStatuses) {
                 if(dailyStatuses != null){
                     String temp = dailyStatuses.get(0).getDate().toString();
-                    Log.i("$$$$$$$$", temp);
+                    //Log.i("$$$$$$$$", temp);
                     for(int i = 0; i < dailyStatuses.size(); i++){
                         persianHorizontalExpCalendar.markDate(dailyStatuses.get(i).getDate(), new CustomGradientDrawable(GradientDrawable.RECTANGLE, Color.parseColor("#35a677bd"))
-                                                .setstroke(1, Color.parseColor("#a677bd")));
+                                                .setstroke(1, Color.parseColor("#a677bd"))).updateMarks();
                     }
-                    findStartDays(dailyStatuses);
+
                 }
             }
         });
@@ -164,17 +163,5 @@ public class CalendarFragment extends Fragment implements EditInfoDialog.EditInf
 
     }
 
-    void findStartDays(List<DailyStatus> dailyStatuses){
-        DailyStatus start = dailyStatuses.get(0);
-        startDays.add(start.getDate());
-        for (int i = 1; i < dailyStatuses.size(); i++) {
-            DailyStatus sd = dailyStatuses.get(i);
-            if(sd.getDate().minusDays(10).compareTo(start.getDate()) > 0)
-            {
-                startDays.add(sd.getDate());
-                endDays.add(dailyStatuses.get(i - 1).getDate());
-                start = sd;
-            }
-        }
-    }
+
 }
