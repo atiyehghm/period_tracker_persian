@@ -45,7 +45,7 @@ public class CalendarFragment extends Fragment implements EditInfoDialog.EditInf
     private Button editInfo;
     private Button actualPeriod;
     private Integer cycle, period;
-    private Chronology perChr = PersianChronologyKhayyam.getInstance(DateTimeZone.forID("Asia/Tehran"));
+    private static Chronology perChr = PersianChronologyKhayyam.getInstance(DateTimeZone.forID("Asia/Tehran"));
     private DateTime lastPeriod;
     private DailyStatusRepository dailyStatusRepo;
     private int defaultCycleLength = 28;
@@ -142,7 +142,7 @@ public class CalendarFragment extends Fragment implements EditInfoDialog.EditInf
         this.cycle = cycle;
         this.period = period;
         this.lastPeriod = lastPeriod;
-        Log.i("******** in fragment", "the cycle and period is:" + this.cycle.toString() + "--" + this.period.toString());
+        Log.i("******** in calfragment", "the cycle and period is:" + this.cycle.toString() + "--" + this.period.toString());
         predictPeriodDays(true);
     }
 
