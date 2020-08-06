@@ -54,7 +54,6 @@ public class ReportFragment extends Fragment {
     BarData barData;
     BarDataSet barDataSet;
     ArrayList barEntries;
-
     private int defaultCycleLength = 28;
     private int defaultPeriodLength = 7;
 
@@ -70,15 +69,19 @@ public class ReportFragment extends Fragment {
 //            public void onChanged(@Nullable String s) {
 //            }
 //        });
+        stackedChart = root.findViewById(R.id.chart);
         dailyStatusRepo = new DailyStatusRepository(this.getContext());
+
         dailyStatusRepo.getAllStatus(true).observe(getViewLifecycleOwner(), new Observer<List<DailyStatus>>() {
             @Override
             public void onChanged(List<DailyStatus> dailyStatuses) {
                 if(dailyStatuses != null){
                     ArrayList<ArrayList<DateTime>> groups = new ArrayList<ArrayList<DateTime>>();
                     ArrayList<DateTime> group1 = new ArrayList<>();
-                    group1.add(dailyStatuses.get(0).getDate());
-                    groups.add(group1);
+                    if(dailyStatuses.size() > 0){
+                        group1.add(dailyStatuses.get(0).getDate());
+                        groups.add(group1);
+                    }
                     for (int i = 1; i< dailyStatuses.size(); i++){
                         DateTime next = dailyStatuses.get(i).getDate();
                         DateTime current = dailyStatuses.get(i-1).getDate();
@@ -89,18 +92,11 @@ public class ReportFragment extends Fragment {
                         }
                         groups.get(groups.size() - 1).add(next);
                     }
-//                    for(ArrayList<DateTime> gr : groups){
-//                        for (DateTime dt : gr){
-//                            System.out.println("DATE_GROUP " +  DateConverter.dateToString(dt));
-//                        }
-//                        System.out.println("----------------");
-//                    }
                     initialChartData(groups);
                     getEntries();
                 }
             }
         });
-        stackedChart = root.findViewById(R.id.chart);
         return root;
     }
 
@@ -125,11 +121,8 @@ public class ReportFragment extends Fragment {
             String currentGroupLabel = DateConverter.dateToString(currentGroupFirstDay);
             ChartBar chartBarData = new ChartBar(currentGroupLabel, currentGroupCycleLength, currentGroupPeriodLength);
             chartData.add(chartBarData);
-
         }
-//        for (ChartBar chartBar : chartData){
-//            System.out.println("Group: " + chartBar.toString());
-//        }
+        getEntries();
     }
 
 

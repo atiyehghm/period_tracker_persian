@@ -3,11 +3,15 @@ package edu.sharif.periodtracker.database.repository;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.room.Room;
 
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.sharif.periodtracker.database.DataBase;
@@ -19,6 +23,7 @@ import edu.sharif.periodtracker.libs.DateConverter;
 
 public class DailyStatusRepository {
     private String DB_NAME = "db_daily_status";
+
 
     private DataBase dailyStatusDatabase;
     public DailyStatusRepository(Context context) {
@@ -75,6 +80,7 @@ public class DailyStatusRepository {
     public LiveData<List<DailyStatus>> getAllStatus(Boolean tp) {
         return dailyStatusDatabase.dao().fetchAllDailyStatus(tp);
     }
+
 
     public LiveData<DailyStatus> getCurrentStatus(DateTime dateTime) {
         String date = DateConverter.dateToString(dateTime);
