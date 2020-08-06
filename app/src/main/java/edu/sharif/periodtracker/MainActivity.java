@@ -18,7 +18,10 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import org.joda.time.Chronology;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.chrono.PersianChronologyKhayyam;
 
 import edu.sharif.periodtracker.libs.DateConverter;
 import edu.sharif.periodtracker.ui.add.SaveInfoDialog;
@@ -30,6 +33,7 @@ import edu.sharif.periodtracker.ui.report.ReportFragment;
 public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private FloatingActionButton addButton;
+    public static Chronology perChr = PersianChronologyKhayyam.getInstance(DateTimeZone.forID("Asia/Tehran"));
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openSaveInfoPage(){
-        String value= DateConverter.dateToString(new DateTime());
+        String value= DateConverter.dateToString(new DateTime(perChr));
         Intent i = new Intent(MainActivity.this, SaveInfoDialog.class);
         i.putExtra(SaveInfoDialog.KEY_DATE_EDIT, value);
         startActivity(i);
