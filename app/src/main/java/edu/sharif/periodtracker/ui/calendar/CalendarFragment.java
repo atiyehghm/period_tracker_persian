@@ -39,7 +39,7 @@ import edu.sharif.periodtracker.database.repository.DailyStatusRepository;
 import edu.sharif.periodtracker.libs.DateConverter;
 import edu.sharif.periodtracker.ui.add.SaveInfoDialog;
 
-public class CalendarFragment extends Fragment implements EditInfoDialog.EditInfoDialogListener, ActualPeriodDialog.ActualPeriodDialogListener {
+public class CalendarFragment extends Fragment implements EditInfoDialog.EditInfoDialogListener {
     private PersianHorizontalExpCalendar persianHorizontalExpCalendar;
     private CalendarViewModel reportViewModel;
     private Button editInfo;
@@ -237,10 +237,6 @@ public class CalendarFragment extends Fragment implements EditInfoDialog.EditInf
                                         .setTextColor(Color.parseColor("#FF66B2")));
             }
         }
-    }
-
-    @Override
-    public void ApplyDate(DateTime startDate, DateTime endDate) {
     }
 
 
