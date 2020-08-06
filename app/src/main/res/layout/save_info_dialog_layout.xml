@@ -41,7 +41,7 @@
                         android:id="@+id/blood_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_blood"
+                        android:src="@drawable/ic_cycle1"
                         android:layout_marginLeft="8dp"
                         />
                     <TextView
@@ -49,6 +49,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/isPeriod"
+                        android:textColor="@color/colorRed"
+                        android:textSize="24sp"
                         />
                 </LinearLayout>
                 <Switch
@@ -69,13 +71,15 @@
                 android:layoutDirection="rtl"
                 android:layout_below="@id/switch_bar_container"
                 android:padding="8dp"
-                android:background="@drawable/border"
+                android:background="@drawable/border_yellow"
                 tools:ignore="MissingConstraints">
                 <TextView
                     android:id="@+id/choose_mood_title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/chooseMood"
+                    android:background="@color/colorGrey2"
+                    android:gravity="center"
                     android:textSize="24sp"
                     />
                 <include
@@ -91,15 +95,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layoutDirection="rtl"
-                android:background="@drawable/border"
+                android:background="@drawable/border_blue"
                 android:padding="8dp"
                 android:layout_below="@+id/part1"
                 tools:ignore="MissingConstraints">
                 <TextView
                     android:id="@+id/choose_pain_title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/choosePainPart"
+                    android:gravity="center"
+                    android:background="@color/colorPrimary"
                     android:textSize="24sp"
                     />
                 <include
@@ -115,15 +121,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layoutDirection="rtl"
-                android:background="@drawable/border"
+                android:background="@drawable/border_pink"
                 android:padding="8dp"
                 android:layout_below="@+id/part2"
                 tools:ignore="MissingConstraints">
                 <TextView
                     android:id="@+id/choose_tool_title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/chooseTool"
+                    android:gravity="center"
+                    android:background="@color/colorPink"
                     android:textSize="24sp"
                     />
                 <include
