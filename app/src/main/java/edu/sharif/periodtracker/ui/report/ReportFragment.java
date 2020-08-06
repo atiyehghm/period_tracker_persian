@@ -16,9 +16,16 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LegendEntry;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 
@@ -26,117 +33,157 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import edu.sharif.periodtracker.R;
+import edu.sharif.periodtracker.database.model.ChartBar;
 import edu.sharif.periodtracker.database.model.DailyStatus;
 import edu.sharif.periodtracker.database.repository.DailyStatusRepository;
+import edu.sharif.periodtracker.libs.DateConverter;
 import edu.sharif.periodtracker.ui.calendar.CalendarFragment;
 
+import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
 import static org.joda.time.Days.daysBetween;
 
 public class ReportFragment extends Fragment {
-    private ArrayList<DateTime> startDays = new ArrayList<>();
-    private ArrayList<DateTime> endDays = new ArrayList<>();
     private ReportViewModel reportViewModel;
     private DailyStatusRepository dailyStatusRepo;
-    private List<DailyStatus> dailySts;
-    private ArrayList<Integer> cycles = new ArrayList<>();
-    private ArrayList<Integer> periods = new ArrayList<>();
     private Float avgCycle, avgPeriod;
     private BarChart stackedChart;
+    private ArrayList<ChartBar> chartData = new ArrayList<ChartBar>();
     BarData barData;
     BarDataSet barDataSet;
     ArrayList barEntries;
+
+    private int defaultCycleLength = 28;
+    private int defaultPeriodLength = 7;
 
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        reportViewModel =
-                ViewModelProviders.of(this).get(ReportViewModel.class);
+//        reportViewModel =
+//                ViewModelProviders.of(this).get(ReportViewModel.class);
         View root = inflater.inflate(R.layout.fragment_report, container, false);
-        reportViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-            }
-        });
+//        reportViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+//            @Override
+//            public void onChanged(@Nullable String s) {
+//            }
+//        });
         dailyStatusRepo = new DailyStatusRepository(this.getContext());
         dailyStatusRepo.getAllStatus(true).observe(getViewLifecycleOwner(), new Observer<List<DailyStatus>>() {
             @Override
             public void onChanged(List<DailyStatus> dailyStatuses) {
                 if(dailyStatuses != null){
-                    String temp = dailyStatuses.get(0).getDate().toString();
-                    findStartDays(dailyStatuses);
+                    ArrayList<ArrayList<DateTime>> groups = new ArrayList<ArrayList<DateTime>>();
+                    ArrayList<DateTime> group1 = new ArrayList<>();
+                    group1.add(dailyStatuses.get(0).getDate());
+                    groups.add(group1);
+                    for (int i = 1; i< dailyStatuses.size(); i++){
+                        DateTime next = dailyStatuses.get(i).getDate();
+                        DateTime current = dailyStatuses.get(i-1).getDate();
+                        int diff = Days.daysBetween(current, next).getDays();
+                        boolean isNewGroup = diff > 1;
+                        if (isNewGroup){
+                            groups.add(new ArrayList<DateTime>());
+                        }
+                        groups.get(groups.size() - 1).add(next);
+                    }
+//                    for(ArrayList<DateTime> gr : groups){
+//                        for (DateTime dt : gr){
+//                            System.out.println("DATE_GROUP " +  DateConverter.dateToString(dt));
+//                        }
+//                        System.out.println("----------------");
+//                    }
+                    initialChartData(groups);
+                    getEntries();
                 }
             }
         });
         stackedChart = root.findViewById(R.id.chart);
-//        getEntries();
-//        barDataSet = new BarDataSet(barEntries, "");
-//        barData = new BarData(barDataSet);
-//        stackedChart.setData(barData);
-//        barDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-//        barDataSet.setValueTextColor(Color.BLACK);
-//        barDataSet.setValueTextSize(18f);
         return root;
+    }
+
+    private void initialChartData(ArrayList<ArrayList<DateTime>> groups) {
+
+        for (int i=0; i< groups.size(); i++){
+            ArrayList<DateTime> currentGroup = groups.get(i);
+            //period length in Current group
+            DateTime currentGroupFirstDay = currentGroup.get(0);
+            DateTime currentGroupLastDay = currentGroup.get(currentGroup.size() - 1);
+            int currentGroupPeriodLength = Days.daysBetween(currentGroupFirstDay, currentGroupLastDay).getDays() + 1;
+            //cycle length between 2 groups
+            int currentGroupCycleLength;
+            if (i != groups.size() - 1) {
+                ArrayList<DateTime> nextGroup = groups.get(i + 1);
+                DateTime nextGroupFirstDay = nextGroup.get(0);
+                currentGroupCycleLength = Days.daysBetween(currentGroupFirstDay, nextGroupFirstDay).getDays() + 1;
+            }
+            else {
+                currentGroupCycleLength = defaultCycleLength;
+            }
+            String currentGroupLabel = DateConverter.dateToString(currentGroupFirstDay);
+            ChartBar chartBarData = new ChartBar(currentGroupLabel, currentGroupCycleLength, currentGroupPeriodLength);
+            chartData.add(chartBarData);
+
+        }
+//        for (ChartBar chartBar : chartData){
+//            System.out.println("Group: " + chartBar.toString());
+//        }
     }
 
 
     private void getEntries() {
         barEntries = new ArrayList<>();
-        for(int i = 0; i < cycles.size(); i++){
-            barEntries.add(new BarEntry((float)i, cycles.get(i)));
+        final String[] labels = new String[chartData.size()];
+        for (int i=0; i< chartData.size(); i++){
+            BarEntry barEntry = new BarEntry(
+                    (float)i,
+                    new float[]{chartData.get(i).getPeriodLength(), chartData.get(i).getCycleLength()}
+                    );
+            barEntries.add(barEntry);
+            labels[i] = chartData.get(i).getLabel();
         }
+
+        xAxisConfiguration(labels);
+        legendsConfiguration();
         barDataSet = new BarDataSet(barEntries, "");
         barData = new BarData(barDataSet);
         stackedChart.setData(barData);
-        barDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-        barDataSet.setValueTextColor(Color.BLACK);
-        barDataSet.setValueTextSize(18f);
+        stackedChart.getDescription().setEnabled(false);
+        barDataSet.setColors(getColors());
+        barDataSet.setValueTextSize(15f);
     }
 
-
-    void findStartDays(List<DailyStatus> dailyStatuses){
-        DailyStatus start = dailyStatuses.get(0);
-        startDays.add(start.getDate());
-        for (int i = 1; i < dailyStatuses.size(); i++) {
-            DailyStatus sd = dailyStatuses.get(i);
-            if(sd.getDate().minusDays(10).compareTo(start.getDate()) > 0)
-            {
-                startDays.add(sd.getDate());
-                endDays.add(dailyStatuses.get(i - 1).getDate());
-                start = sd;
-            }
-        }
-        endDays.add(dailyStatuses.get(dailyStatuses.size() -1).getDate());
-        calculatingPeriods();
-        calculatingCycles();
+    private void legendsConfiguration() {
+        Legend legends = stackedChart.getLegend();
+        LegendEntry lnPeriodLength = new LegendEntry();
+        lnPeriodLength.label = "طول پریود";
+        lnPeriodLength.formColor = getColors()[0];
+        LegendEntry lnCycleLength = new LegendEntry();
+        lnCycleLength.label = "طول دوره";
+        lnCycleLength.formColor = getColors()[1];
+        legends.setCustom(Arrays.asList(lnPeriodLength, lnCycleLength));
     }
 
-    private void calculatingCycles(){
-        avgCycle = Float.valueOf(0);
-        for(int i = 1; i< startDays.size(); i++){
-            Integer cycle = calculateDifference(startDays.get(i-1), startDays.get(i));
-            cycles.add(cycle + 1);
-            avgCycle += Float.valueOf(cycle+1);
-        }
-        avgCycle = avgCycle / cycles.size();
-        getEntries();
+    private void xAxisConfiguration(final String[] labels) {
+        XAxis xAxis = stackedChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setTextSize(12f);
+        xAxis.setLabelRotationAngle(-90);
+        xAxis.setGranularity(1f);
+        stackedChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
 
     }
 
-    private void calculatingPeriods(){
-        avgPeriod = Float.valueOf(0);
-        for(int i = 0; i< startDays.size(); i++){
-            Integer period = calculateDifference(startDays.get(i), endDays.get(i));
-            periods.add(period + 1);
-            avgPeriod += Float.valueOf(period+1);
-        }
-        avgPeriod = avgPeriod / periods.size();
+    private int[] getColors() {
+
+        // have as many colors as stack-values per entry
+        int[] colors = new int[2];
+
+        System.arraycopy(new int[]{rgb("#FFFFAAB9"), rgb("#FF70a5e0")}, 0, colors, 0, 2);
+
+        return colors;
     }
 
-    private int calculateDifference(DateTime date1, DateTime date2){
-        int diff = Days.daysBetween(date1, date2).getDays();
-        return diff;
-    }
 }

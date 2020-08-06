@@ -9,9 +9,11 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import edu.sharif.periodtracker.MainActivity;
+
 public class DateConverter {
 
-    static DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd");
+    static DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd").withChronology(MainActivity.perChr);
 
     @TypeConverter
     public static DateTime stringToDate(String value) {

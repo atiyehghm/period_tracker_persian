@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.sharif.periodtracker.MainActivity;
+import edu.sharif.periodtracker.MyApplication;
 import edu.sharif.periodtracker.R;
 import edu.sharif.periodtracker.database.model.DailyStatus;
 import edu.sharif.periodtracker.database.repository.DailyStatusRepository;
@@ -65,10 +66,9 @@ public class CalendarFragment extends Fragment implements EditInfoDialog.EditInf
                     @Override
                     public void onDateSelected(DateTime dateTime) {
                         String value= DateConverter.dateToString(dateTime);
-                        Intent i = new Intent(root.getContext(), SaveInfoDialog.class);
+                        Intent i = new Intent(MyApplication.getContext(), SaveInfoDialog.class);
                         i.putExtra(SaveInfoDialog.KEY_DATE_EDIT, value);
                         startActivity(i);
-                        markPeriodDate();
                     }
 
                     @Override
@@ -105,7 +105,7 @@ public class CalendarFragment extends Fragment implements EditInfoDialog.EditInf
                     //Log.i("$$$$$$$$", temp);
                     for(int i = 0; i < dailyStatuses.size(); i++){
                         persianHorizontalExpCalendar.markDate(dailyStatuses.get(i).getDate(), new CustomGradientDrawable(GradientDrawable.RECTANGLE, Color.parseColor("#35a677bd"))
-                                                .setstroke(1, Color.parseColor("#a677bd")));
+                                                .setstroke(1, Color.parseColor("#a677bd"))).updateMarks();
                     }
 
                 }
