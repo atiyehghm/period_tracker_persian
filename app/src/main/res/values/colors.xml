@@ -3,10 +3,14 @@
     <color name="colorPrimary">#FF70a5e0</color>
     <color name="colorYellow">#FFE8FC77</color>
     <color name="colorPink">#ffaab9</color>
+    <color name="colorPrimary1">#8070A5E0</color>
+    <color name="colorYellow1">#80E8FC77</color>
+    <color name="colorPink1">#80FFAAB9</color>
     <color name="colorStroke">#AFA9AB</color>
     <color name="colorToolbar">#3CCAC9C9</color>
     <color name="colorWhite">#E8FFFFFF</color>
     <color name="colorRed">#DA040B</color>
+    <color name="colorRed1">#9CBD4C50</color>
     <color name="colorGrey">#454343</color>
     <color name="colorGrey1">#2B2929</color>
     <color name="colorGrey2">#F1C40F</color>
