@@ -50,6 +50,7 @@ public class CalendarFragment extends Fragment implements EditInfoDialog.EditInf
     private DailyStatusRepository dailyStatusRepo;
     private int defaultCycleLength = 28;
     private int defaultPeriodLength = 7;
+    private Boolean first;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -61,7 +62,7 @@ public class CalendarFragment extends Fragment implements EditInfoDialog.EditInf
         reportViewModel = ViewModelProviders.of(this).get(CalendarViewModel.class);
         final View root = inflater.inflate(R.layout.fragment_calendar, container, false);
         persianHorizontalExpCalendar = root.findViewById(R.id.persianCalendar);
-
+        first = true;
         persianHorizontalExpCalendar
                 .setPersianHorizontalExpCalListener(new PersianHorizontalExpCalendar.PersianHorizontalExpCalListener() {
                     @Override
@@ -75,6 +76,7 @@ public class CalendarFragment extends Fragment implements EditInfoDialog.EditInf
                         i.putExtra(SaveInfoDialog.KEY_DATE_EDIT, value);
                         startActivity(i);
                         Log.i("^^^^^^^^^", "this is after activity");
+                        first = false;
                     }
 
                     @Override
@@ -88,7 +90,6 @@ public class CalendarFragment extends Fragment implements EditInfoDialog.EditInf
         actualPeriod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //openActualPeriodDialog();
                 markPeriodDate();
                 predictPeriodDays(false);
             }
@@ -115,13 +116,13 @@ public class CalendarFragment extends Fragment implements EditInfoDialog.EditInf
             @Override
             public void onChanged(List<DailyStatus> dailyStatuses) {
                 if(dailyStatuses != null){
-                    String temp = dailyStatuses.get(0).getDate().toString();
-                    //Log.i("$$$$$$$$", temp);
-                    for(int i = 0; i < dailyStatuses.size(); i++){
-                        persianHorizontalExpCalendar.markDate(dailyStatuses.get(i).getDate(), new CustomGradientDrawable(GradientDrawable.RECTANGLE, Color.parseColor("#35a677bd"))
-                                                .setstroke(1, Color.parseColor("#a677bd"))).updateMarks();
+                    if (dailyStatuses.size() > 0){
+                        String temp = dailyStatuses.get(0).getDate().toString();
+                        for(int i = 0; i < dailyStatuses.size(); i++){
+                            persianHorizontalExpCalendar.markDate(dailyStatuses.get(i).getDate(), new CustomGradientDrawable(GradientDrawable.RECTANGLE, Color.parseColor("#35a677bd"))
+                                    .setstroke(1, Color.parseColor("#a677bd"))).updateMarks();
+                        }
                     }
-
                 }
             }
         });
@@ -170,6 +171,7 @@ public class CalendarFragment extends Fragment implements EditInfoDialog.EditInf
 
             }
         }else{
+            dailyStatusRepo = new DailyStatusRepository(this.getContext());
             dailyStatusRepo.getAllStatus(true).observe(getViewLifecycleOwner(), new Observer<List<DailyStatus>>() {
                 @Override
                 public void onChanged(List<DailyStatus> dailyStatuses) {
@@ -198,45 +200,48 @@ public class CalendarFragment extends Fragment implements EditInfoDialog.EditInf
     }
 
     private void calculateAvgValues(ArrayList<ArrayList<DateTime>> groups) {
-        float periodAvg = 0;
-        float cycleAvg = 0;
-        for (int i=0; i< groups.size(); i++){
-            ArrayList<DateTime> currentGroup = groups.get(i);
-            //period length in Current group
-            DateTime currentGroupFirstDay = currentGroup.get(0);
-            DateTime currentGroupLastDay = currentGroup.get(currentGroup.size() - 1);
-            int currentGroupPeriodLength = Days.daysBetween(currentGroupFirstDay, currentGroupLastDay).getDays() + 1;
-            periodAvg += currentGroupPeriodLength;
-            //cycle length between 2 groups
-            int currentGroupCycleLength;
-            if (i != groups.size() - 1) {
-                ArrayList<DateTime> nextGroup = groups.get(i + 1);
-                DateTime nextGroupFirstDay = nextGroup.get(0);
-                currentGroupCycleLength = Days.daysBetween(currentGroupFirstDay, nextGroupFirstDay).getDays() + 1;
+        if(groups.size() > 0){
+            float periodAvg = 0;
+            float cycleAvg = 0;
+            for (int i=0; i< groups.size(); i++){
+                ArrayList<DateTime> currentGroup = groups.get(i);
+                //period length in Current group
+                DateTime currentGroupFirstDay = currentGroup.get(0);
+                DateTime currentGroupLastDay = currentGroup.get(currentGroup.size() - 1);
+                int currentGroupPeriodLength = Days.daysBetween(currentGroupFirstDay, currentGroupLastDay).getDays() + 1;
+                periodAvg += currentGroupPeriodLength;
+                //cycle length between 2 groups
+                int currentGroupCycleLength;
+                if (i != groups.size() - 1) {
+                    ArrayList<DateTime> nextGroup = groups.get(i + 1);
+                    DateTime nextGroupFirstDay = nextGroup.get(0);
+                    currentGroupCycleLength = Days.daysBetween(currentGroupFirstDay, nextGroupFirstDay).getDays() + 1;
+                }
+                else {
+                    currentGroupCycleLength = defaultCycleLength;
+                }
+                cycleAvg += currentGroupCycleLength;
             }
-            else {
-                currentGroupCycleLength = defaultCycleLength;
+            periodAvg = periodAvg/groups.size();
+            cycleAvg = cycleAvg/(groups.size());
+            period = (int) periodAvg;
+            cycle = (int) cycleAvg;
+            Log.i("AVGGGGGGGGGGG", "the avg period" + period + "avg cycle" + cycle);
+            DateTime startDate = groups.get(groups.size() - 1).get(0);
+            for (int i = 1; i < 6; i++) {
+                startDate = startDate.plusDays(cycle);
+                for (int j = 0; j < period; j++) {
+                    this.persianHorizontalExpCalendar
+                            .markDate(new DateTime(startDate.getYear(), startDate.getMonthOfYear(), startDate.getDayOfMonth(), 0, 0, perChr).plusDays(j),
+                                    new CustomGradientDrawable(GradientDrawable.RECTANGLE, Color.parseColor("#ff3399"))
+                                            .setViewLayoutSize(ViewGroup.LayoutParams.MATCH_PARENT, 10)
+                                            .setViewLayoutGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM)
+                                            .setcornerRadius(5)
+                                            .setTextColor(Color.parseColor("#FF66B2")));
+                }
             }
-            cycleAvg += currentGroupCycleLength;
         }
-        periodAvg = periodAvg/groups.size();
-        cycleAvg = cycleAvg/(groups.size() - 1);
-        period = (int) periodAvg;
-        cycle = (int) cycleAvg;
-        Log.i("AVGGGGGGGGGGG", "the avg period" + period + "avg cycle" + cycle);
-        DateTime startDate = groups.get(groups.size() - 1).get(0);
-        for (int i = 1; i < 6; i++) {
-            startDate = startDate.plusDays(cycle);
-            for (int j = 0; j < period; j++) {
-                this.persianHorizontalExpCalendar
-                        .markDate(new DateTime(startDate.getYear(), startDate.getMonthOfYear(), startDate.getDayOfMonth(), 0, 0, perChr).plusDays(j),
-                                new CustomGradientDrawable(GradientDrawable.RECTANGLE, Color.parseColor("#ff3399"))
-                                        .setViewLayoutSize(ViewGroup.LayoutParams.MATCH_PARENT, 10)
-                                        .setViewLayoutGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM)
-                                        .setcornerRadius(5)
-                                        .setTextColor(Color.parseColor("#FF66B2")));
-            }
-        }
+
     }
 
 
